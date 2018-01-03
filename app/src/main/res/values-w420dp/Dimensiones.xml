@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <dimen name="Tv_Nombre">32sp</dimen>
+    <dimen name="Tv_Mac">26sp</dimen>
+    <dimen name="Tv_Canal">26sp</dimen>
+    <dimen name="Tv_Vendor">26sp</dimen>
+    <dimen name="Tv_Titulo">28sp</dimen>
+    <dimen name="Ic_Width">70dp</dimen>
+</resources>

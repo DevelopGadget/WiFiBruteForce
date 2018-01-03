@@ -1,0 +1,141 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.constraint.ConstraintLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <LinearLayout
+        android:id="@+id/linearLayout"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
+
+        <RadioGroup
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content">
+
+            <RadioButton
+                android:id="@+id/Rb_Alfa"
+                android:layout_width="wrap_content"
+                android:layout_height="55dp"
+                android:layout_weight="1"
+                android:fontFamily="@font/amita"
+                android:text="Alfanuméricos"
+                android:typeface="sans" />
+
+            <RadioButton
+                android:id="@+id/Rb_Num"
+                android:layout_width="wrap_content"
+                android:layout_height="55dp"
+                android:layout_weight="1"
+                android:fontFamily="@font/amita"
+                android:text="Numéricos"
+                android:typeface="sans" />
+
+            <RadioButton
+                android:id="@+id/Rb_Archivo"
+                android:layout_width="wrap_content"
+                android:layout_height="55dp"
+                android:layout_weight="1"
+                android:fontFamily="@font/amita"
+                android:text="Desde un archivo"
+                android:typeface="sans" />
+        </RadioGroup>
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+
+            <android.support.design.widget.TextInputLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content">
+
+                <EditText
+                    android:id="@+id/Edit_Alfa"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:ems="10"
+                    android:fontFamily="@font/amita"
+                    android:hint="# de caracteres mínimo 8"
+                    android:maxLength="2"
+                    android:inputType="number"
+                    android:typeface="sans" />
+            </android.support.design.widget.TextInputLayout>
+
+            android.support.design.widget.TextInputLayout/>
+
+            <android.support.design.widget.TextInputLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content">
+
+                <EditText
+                    android:id="@+id/Edit_Num"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:ems="10"
+                    android:maxLength="2"
+                    android:fontFamily="@font/amita"
+                    android:hint="# de caracteres mínimo 8"
+                    android:enabled="false"
+                    android:inputType="number"
+                    android:typeface="sans" />
+            </android.support.design.widget.TextInputLayout>
+
+            <android.support.v7.widget.AppCompatImageButton
+                android:id="@+id/Btn_Find"
+                android:layout_width="match_parent"
+                android:layout_height="52dp"
+                android:src="@mipmap/find"
+                android:enabled="false"/>
+        </LinearLayout>
+
+    </LinearLayout>
+
+    <TextView
+        android:id="@+id/Tv_Opcion"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="8dp"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="8dp"
+        android:fontFamily="@font/amita"
+        android:text="Seleccione una opción"
+        android:textAlignment="center"
+        android:textColor="@android:color/background_dark"
+        android:textSize="18sp"
+        android:textStyle="bold"
+        android:typeface="sans"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/linearLayout" />
+
+    <ImageButton
+        android:id="@+id/Btn_Cancel"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="8dp"
+        android:layout_marginTop="8dp"
+        android:background="@null"
+        app:layout_constraintEnd_toEndOf="@+id/Tv_Opcion"
+        app:layout_constraintTop_toBottomOf="@+id/Tv_Opcion"
+        app:srcCompat="@mipmap/cancel" />
+
+    <ImageButton
+        android:id="@+id/Btn_Fix"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="24dp"
+        android:layout_marginTop="8dp"
+        android:background="@null"
+        app:layout_constraintEnd_toStartOf="@+id/Btn_Cancel"
+        app:layout_constraintTop_toBottomOf="@+id/Tv_Opcion"
+        app:srcCompat="@mipmap/wifi_look" />
+
+</android.support.constraint.ConstraintLayout>

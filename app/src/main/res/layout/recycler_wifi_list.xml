@@ -1,0 +1,94 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <TextView
+        android:id="@+id/Tv_Nombre"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="8dp"
+        android:layout_weight="1"
+        android:fontFamily="monospace"
+        android:text="TextView"
+        android:textAlignment="textStart"
+        android:textColor="#000"
+        android:textSize="@dimen/Tv_Nombre"
+        android:textStyle="bold"
+        android:typeface="monospace"
+        app:layout_constraintEnd_toStartOf="@+id/imageView"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <TextView
+        android:id="@+id/Tv_Mac"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="8dp"
+        android:layout_weight="1"
+        android:fontFamily="monospace"
+        android:text="TextView"
+        android:textAlignment="textStart"
+        android:textColor="#000"
+        android:textSize="@dimen/Tv_Mac"
+        android:textStyle="bold"
+        android:typeface="monospace"
+        app:layout_constraintEnd_toStartOf="@+id/imageView"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/Tv_Nombre" />
+
+    <TextView
+        android:id="@+id/Tv_Canal"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="8dp"
+        android:layout_weight="1"
+        android:fontFamily="monospace"
+        android:text="TextView"
+        android:textAlignment="viewStart"
+        android:textColor="#000"
+        android:textSize="@dimen/Tv_Canal"
+        android:textStyle="bold"
+        android:typeface="monospace"
+        app:layout_constraintEnd_toStartOf="@+id/imageView"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/Tv_Mac" />
+
+    <TextView
+        android:id="@+id/Tv_Vendor"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="8dp"
+        android:layout_weight="1"
+        android:fontFamily="monospace"
+        android:text="TextView"
+        android:textAlignment="viewStart"
+        android:textColor="#000"
+        android:textSize="@dimen/Tv_Vendor"
+        android:textStyle="bold"
+        android:typeface="monospace"
+        app:layout_constraintEnd_toStartOf="@+id/imageView"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/Tv_Canal" />
+
+    <TextView
+        android:id="@+id/textView2"
+        android:layout_width="match_parent"
+        android:layout_height="2dp"
+        android:background="#000"
+        android:text="-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------"
+        app:layout_constraintTop_toBottomOf="@+id/Tv_Vendor"
+        tools:layout_editor_absoluteX="0dp" />
+
+    <ImageView
+        android:id="@+id/imageView"
+        android:layout_width="@dimen/Ic_Width"
+        android:layout_height="0dp"
+        android:layout_marginEnd="8dp"
+        app:layout_constraintBottom_toBottomOf="@+id/Tv_Vendor"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="@+id/Tv_Nombre"
+        app:srcCompat="@drawable/wifi" />
+</android.support.constraint.ConstraintLayout>
