@@ -4,21 +4,20 @@ import android.annotation.SuppressLint;
 import android.app.AlertDialog;
 import android.app.Dialog;
 import android.app.DialogFragment;
+import android.app.FragmentTransaction;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.v7.app.AppCompatActivity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.RadioButton;
 import android.widget.TextView;
-
 import com.nbsp.materialfilepicker.MaterialFilePicker;
-
 import java.util.regex.Pattern;
-
 import static android.app.Activity.RESULT_OK;
 import static com.nbsp.materialfilepicker.ui.FilePickerActivity.RESULT_FILE_PATH;
 
@@ -175,7 +174,7 @@ public class Dialog_Wifi extends DialogFragment implements View.OnClickListener 
         }
     }
 
-    private void Alert_Dialog(String Titulo, String Mensaje, int Icono, Context context, boolean Icono_Negative) {
+    private void Alert_Dialog(String Titulo, String Mensaje, int Icono, final Context context, boolean Icono_Negative) {
         AlertDialog.Builder b = new AlertDialog.Builder(context)
                 .setTitle(Titulo)
                 .setIcon(Icono)
@@ -184,8 +183,8 @@ public class Dialog_Wifi extends DialogFragment implements View.OnClickListener 
                 .setPositiveButton("Ok", new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialogInterface, int i) {
-                        Oculto = true;
                         dismiss();
+                        new Passwords(Tv_Opcion.getText().toString(), false).show(((AppCompatActivity) context).getFragmentManager(), "");
                     }
                 });
         if (Icono_Negative) {

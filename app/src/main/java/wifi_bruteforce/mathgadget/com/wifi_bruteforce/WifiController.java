@@ -57,7 +57,7 @@ public class WifiController {
             public void onClick(View view) {
                 wifiManager.reconnect();
                 Position = myList.getChildAdapterPosition(view);
-                if (Integer.parseInt(WifiInfo.get(Position).getsLevel()) >= -75) {
+                if (Integer.parseInt(WifiInfo.get(Position).getsLevel()) >= -90) {
                     new Dialog_Wifi(WifiInfo.get(Position).getsNombre()).show(Fr, "Dialog");
                 } else {
                     Toast.makeText(Cont, "La Intensidad De La Señal Es Muy Baja Refresque La Lista", Toast.LENGTH_LONG).show();
