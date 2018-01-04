@@ -4,17 +4,16 @@ import android.annotation.SuppressLint;
 import android.app.AlertDialog;
 import android.app.Dialog;
 import android.app.DialogFragment;
+import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
-import android.os.Handler;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.RadioButton;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.nbsp.materialfilepicker.MaterialFilePicker;
 
@@ -32,13 +31,11 @@ public class Dialog_Wifi extends DialogFragment implements View.OnClickListener 
     private String Titulo, Path = "", Array = "";
     private View view;
     private RadioButton Rb_Alfa, Rb_Num, Rb_Archvio;
-    private WifiController Wifi;
-    private boolean Archivo = false;
+    private boolean Archivo = false, Oculto = false;
 
     @SuppressLint("ValidFragment")
     public Dialog_Wifi(String titulo) {
         Titulo = titulo;
-        this.Wifi = Inicio.getWifi();
     }
 
     @Override
@@ -146,70 +143,60 @@ public class Dialog_Wifi extends DialogFragment implements View.OnClickListener 
         super.onActivityResult(requestCode, resultCode, data);
     }
 
-    private void WordList(char[] elem, String act, int Tamaño) {
-        Wifi.Connect("00986307503763", Wifi.WifiInfo.get(Wifi.Position).getsNombre());
-        Wifi.Reconnect();
-        new Handler().postDelayed(new Runnable() {
-            @Override
-            public void run() {
-                if (Wifi.isOnline()) {
-                    Log.i("Online", "Conectado");
-                    Toast.makeText(getActivity(), "Conectado", Toast.LENGTH_SHORT).show();
-                    Wifi.Remove();
-                    try {
-                        dismiss();
-                    } catch (Throwable throwable) {
-                        throwable.printStackTrace();
-                    }
-                }
-            }
-        }, 10000);
-       /* if(Tamaño == 0){
-
-        }else{
-            for (int i = 0; i < elem.length; i++) {
-                WordList(elem, act + elem[i], Tamaño - 1);
-            }
-        }
-        */
-    }
-
     private void Fix() {
-        if (Integer.parseInt(Wifi.WifiInfo.get(Wifi.Position).getsLevel()) >= -95) {
-            if ((!EditCaracteres.getText().toString().equals("") && EditCaracteres.getText().toString() != null)) {
-                Validar(EditCaracteres.getText().toString());
-            } else if (!EditNumerico.getText().toString().equals("") && EditNumerico.getText().toString() != null) {
-                Validar(EditNumerico.getText().toString());
-            } else {
-
-            }
+        if ((!EditCaracteres.getText().toString().equals("") && EditCaracteres.getText().toString() != null)) {
+            Validar(EditCaracteres.getText().toString());
+        } else if (!EditNumerico.getText().toString().equals("") && EditNumerico.getText().toString() != null) {
+            Validar(EditNumerico.getText().toString());
         } else {
-            Inicio.Alert_Dialog("ERROR!", "La Intensidad De La Señal Es Baja", R.mipmap.ic_launcher, getActivity(), false);
-            Toast.makeText(getActivity(), "Refresque La Lista", Toast.LENGTH_LONG).show();
-            dismiss();
+            if (Archivo) {
+
+            } else {
+                Alert_Dialog("ERROR!", "Verifique El Archivo Ingresado", R.mipmap.ic_launcher, getActivity(), false);
+            }
         }
     }
 
-    private boolean Validar(String Numero) {
+    private void Validar(String Numero) {
         try {
             if (Integer.parseInt(Numero) >= 8 && Integer.parseInt(Numero) <= 15) {
-                if (Inicio.Alert_Dialog("Información", "Con Este Metodo Prueba Diferentes Contraseñas " +
-                        "Puede Que Afecte El Rendimiento ¿Quiere Continuar?", R.mipmap.information, getActivity(), true)) {
-                    return true;
-                } else {
-                    return false;
-                }
+                Alert_Dialog("Información", "Con Este Metodo Prueba Diferentes Contraseñas " +
+                        "Puede Que Afecte El Rendimiento ¿Quiere Continuar?", R.mipmap.information, getActivity(), true);
+                dismiss();
             } else {
                 if (Numero.equals("") || Numero == null) {
-                    Inicio.Alert_Dialog("ERROR!", "Revise Los Datos Ingresados", R.mipmap.ic_launcher, getActivity(), false);
+                    Alert_Dialog("ERROR!", "Revise Los Datos Ingresados", R.mipmap.ic_launcher, getActivity(), false);
                 } else {
-                    Inicio.Alert_Dialog("ERROR!", "Debe Ingresar Un Valor Menor O Igual A 8 Y Menor  O Igual a 15", R.mipmap.ic_launcher, getActivity(), false);
+                    Alert_Dialog("ERROR!", "Debe Ingresar Un Valor Menor O Igual A 8 Y Menor  O Igual a 15", R.mipmap.ic_launcher, getActivity(), false);
                 }
-                return false;
             }
         } catch (Exception e) {
-            Inicio.Alert_Dialog("ERROR!", "Revise Los Datos Ingresados", R.mipmap.ic_launcher, getActivity(), false);
-            return false;
+            Alert_Dialog("ERROR!", "Revise Los Datos Ingresados", R.mipmap.ic_launcher, getActivity(), false);
         }
     }
+
+    private void Alert_Dialog(String Titulo, String Mensaje, int Icono, Context context, boolean Icono_Negative) {
+        AlertDialog.Builder b = new AlertDialog.Builder(context)
+                .setTitle(Titulo)
+                .setIcon(Icono)
+                .setCancelable(false)
+                .setMessage(Mensaje)
+                .setPositiveButton("Ok", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialogInterface, int i) {
+                        Oculto = true;
+                        dismiss();
+                    }
+                });
+        if (Icono_Negative) {
+            b.setNegativeButton("No", new DialogInterface.OnClickListener() {
+                @Override
+                public void onClick(DialogInterface dialogInterface, int i) {
+                }
+            });
+        }
+        b.show();
+    }
+
+
 }

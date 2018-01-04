@@ -197,28 +197,4 @@ public class Inicio extends AppCompatActivity {
         mHideHandler.postDelayed(mHideRunnable, delayMillis);
     }
 
-    static boolean Alert_Dialog(String Titulo, String Mensaje, int Icono, Context context, boolean Icono_Negative) {
-        final boolean[] R = {true};
-        AlertDialog.Builder b = new AlertDialog.Builder(context)
-                .setTitle(Titulo)
-                .setIcon(Icono)
-                .setCancelable(false)
-                .setMessage(Mensaje)
-                .setPositiveButton("Ok", new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialogInterface, int i) {
-                            R[0] = true;
-                    }
-                });
-        if (Icono_Negative) {
-           b.setNegativeButton("No", new DialogInterface.OnClickListener() {
-               @Override
-               public void onClick(DialogInterface dialogInterface, int i) {
-                   R[0] = false;
-               }
-           });
-        }
-        b.show();
-        return R[0];
-    }
 }
