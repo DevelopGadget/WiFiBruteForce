@@ -31,6 +31,7 @@ public class WifiController {
     protected int Position = -1;
     protected ArrayList<Wifi_List_Model> WifiInfo;
     private WifiConfiguration Wifi;
+    private boolean Conectada = false;
 
     public WifiController(Context Cont, RecyclerView myList, FragmentManager Fr) {
         this.Cont = Cont;
@@ -98,10 +99,11 @@ public class WifiController {
     public void DisableNetwork(){
         if(isOnline()){
             wifiManager.disableNetwork(wifiManager.getConnectionInfo().getNetworkId());
+            Conectada = true;
         }
     }
     public void EnableNetwork(){
-        wifiManager.enableNetwork(wifiManager.getConnectionInfo().getNetworkId(), true);
+        if(Conectada) wifiManager.enableNetwork(wifiManager.getConnectionInfo().getNetworkId(), true);
     }
 
 }

@@ -9,6 +9,7 @@ import android.content.Context;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v4.app.NotificationCompat;
+import android.support.v7.app.AppCompatActivity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.TextView;
@@ -71,7 +72,6 @@ public class Passwords extends DialogFragment {
 
         @Override
         protected Void doInBackground(Void... voids) {
-            Wifi.DisableNetwork();
             if (Leer_Archivo) {
                 try {Cargar_Archivo(Elem.toString());} catch (IOException e) {}
                 if(Contraseñas.isEmpty()){
@@ -80,9 +80,11 @@ public class Passwords extends DialogFragment {
                     dismiss();
                     return null;
                 }else{
+                    Wifi.DisableNetwork();
                     Contraseña_Archivo();
                 }
             } else {
+                Wifi.DisableNetwork();
                 WordList(Elem.toCharArray(), "", Tamaño);
             }
             return null;
@@ -111,12 +113,12 @@ public class Passwords extends DialogFragment {
         }
 
         private void WordList(char[] elem, final String act, int Tamaño) {
-            if(isCancelled()) return;
+            if(isCancelled()) getActivity().finish();
             if (Tamaño == 0) {
                 Connect(act);
             } else {
                 for (int i = 0; i < elem.length; i++) {
-                    if(isCancelled()) break;
+                    if(isCancelled()) getActivity().finish();
                     WordList(elem, act + elem[i], Tamaño - 1);
                 }
             }
