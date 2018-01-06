@@ -48,7 +48,7 @@ public class Passwords extends DialogFragment {
         view.findViewById(R.id.Btn_Cancel).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-
+                Tarea.cancel(true);
             }
         });
         builder.setView(view)
@@ -62,6 +62,7 @@ public class Passwords extends DialogFragment {
 
         @Override
         protected Void doInBackground(Void... voids) {
+            Wifi.DisableNetwork();
             if (Leer_Archivo) {
 
             } else {
@@ -86,13 +87,14 @@ public class Passwords extends DialogFragment {
         protected void onCancelled() {
             super.onCancelled();
             try {
-                view.findViewById(R.id.Btn_Cancel).performClick();
+                this.cancel(true);
                 dismiss();
             } catch (Throwable throwable) {
             }
         }
 
         private void WordList(char[] elem, final String act, int Tamaño) {
+            if(isCancelled()) return;
             if (Tamaño == 0) {
                 publishProgress(act);
                 Notificacion(act, 001, "Probando", "Probando Contraseñas", R.drawable.notificacion, null);
@@ -110,6 +112,7 @@ public class Passwords extends DialogFragment {
                 }
             } else {
                 for (int i = 0; i < elem.length; i++) {
+                    if(isCancelled()) break;
                     WordList(elem, act + elem[i], Tamaño - 1);
                 }
             }

@@ -95,5 +95,15 @@ public class WifiController {
         wifiManager.setWifiEnabled(false);
         wifiManager.setWifiEnabled(true);
     }
+    public void DisableNetwork(){
+        if(isOnline()){
+            List<WifiConfiguration> List = wifiManager.getConfiguredNetworks();
+            for (WifiConfiguration Wifi: List) {
+                if(Wifi.SSID.equals(WifiInfo.get(Position).getsNombre())){
+                    wifiManager.disableNetwork(Wifi.networkId);
+                }
+            }
+        }
+    }
 
 }
