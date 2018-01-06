@@ -69,9 +69,6 @@ public class Adaptador_Wifi extends RecyclerView.Adapter<Adaptador_Wifi.ViewHold
         notifyDataSetChanged();
     }
 
-    /*
-    Permite limpiar todos los elementos del recycler
-     */
     public void clear(){
         Lista.clear();
         notifyDataSetChanged();

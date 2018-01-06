@@ -97,13 +97,11 @@ public class WifiController {
     }
     public void DisableNetwork(){
         if(isOnline()){
-            List<WifiConfiguration> List = wifiManager.getConfiguredNetworks();
-            for (WifiConfiguration Wifi: List) {
-                if(Wifi.SSID.equals(WifiInfo.get(Position).getsNombre())){
-                    wifiManager.disableNetwork(Wifi.networkId);
-                }
-            }
+            wifiManager.disableNetwork(wifiManager.getConnectionInfo().getNetworkId());
         }
+    }
+    public void EnableNetwork(){
+        wifiManager.enableNetwork(wifiManager.getConnectionInfo().getNetworkId(), true);
     }
 
 }

@@ -4,7 +4,6 @@ import android.annotation.SuppressLint;
 import android.app.AlertDialog;
 import android.app.Dialog;
 import android.app.DialogFragment;
-import android.app.FragmentTransaction;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -31,6 +30,7 @@ public class Dialog_Wifi extends DialogFragment implements View.OnClickListener 
     private View view;
     private RadioButton Rb_Alfa, Rb_Num, Rb_Archvio;
     private boolean Archivo = false, Oculto = false;
+    private WifiController Wifi = Inicio.getWifi();
 
     @SuppressLint("ValidFragment")
     public Dialog_Wifi(String titulo) {
@@ -64,8 +64,7 @@ public class Dialog_Wifi extends DialogFragment implements View.OnClickListener 
         Rb_Num.setOnClickListener(this);
         Rb_Archvio.setOnClickListener(this);
         Btn_Archivo.setOnClickListener(this);
-        Rb_Alfa.setChecked(true);
-        Btn_Archivo.setEnabled(false);
+        Rb_Alfa.performClick();
     }
 
     @Override
@@ -98,7 +97,6 @@ public class Dialog_Wifi extends DialogFragment implements View.OnClickListener 
                 break;
             case R.id.Btn_Fix:
                 Fix();
-                //WordList("01".toCharArray(), "", 2);
                 Archivo = false;
                 break;
         }
@@ -143,15 +141,17 @@ public class Dialog_Wifi extends DialogFragment implements View.OnClickListener 
     }
 
     private void Fix() {
-        if ((!EditCaracteres.getText().toString().equals("") && EditCaracteres.getText().toString() != null)) {
+        if (Rb_Alfa.isChecked()) {
             Validar(EditCaracteres.getText().toString());
-        } else if (!EditNumerico.getText().toString().equals("") && EditNumerico.getText().toString() != null) {
+        } else if (Rb_Num.isChecked()) {
             Validar(EditNumerico.getText().toString());
         } else {
             if (Archivo) {
-
+                    Alert_Dialog("Información", "Con Este Metodo Suele Ser Mas Exitoso Ya Que Se " +
+                            "Creo Previo Un WordList Con Las Posibles Mas Acertadas Contraseñas",
+                            R.mipmap.information, getActivity(), false, true, false, 0);
             } else {
-                Alert_Dialog("ERROR!", "Verifique El Archivo Ingresado", R.mipmap.ic_launcher, getActivity(), false);
+                Alert_Dialog("ERROR!", "Verifique El Archivo Ingresado", R.mipmap.ic_launcher, getActivity(), false, false, true, 0);
             }
         }
     }
@@ -160,21 +160,22 @@ public class Dialog_Wifi extends DialogFragment implements View.OnClickListener 
         try {
             if (Integer.parseInt(Numero) >= 8 && Integer.parseInt(Numero) <= 15) {
                 Alert_Dialog("Información", "Con Este Metodo Prueba Diferentes Contraseñas " +
-                        "Puede Que Afecte El Rendimiento ¿Quiere Continuar?", R.mipmap.information, getActivity(), true);
+                        "Puede Que Afecte El Rendimiento ¿Quiere Continuar?", R.mipmap.information, getActivity(), true, false, false, Integer.parseInt(Numero));
                 dismiss();
             } else {
                 if (Numero.equals("") || Numero == null) {
-                    Alert_Dialog("ERROR!", "Revise Los Datos Ingresados", R.mipmap.ic_launcher, getActivity(), false);
+                    Alert_Dialog("ERROR!", "Revise Los Datos Ingresados", R.mipmap.ic_launcher, getActivity(), false, false, true, 0);
                 } else {
-                    Alert_Dialog("ERROR!", "Debe Ingresar Un Valor Menor O Igual A 8 Y Menor  O Igual a 15", R.mipmap.ic_launcher, getActivity(), false);
+                    Alert_Dialog("ERROR!", "Debe Ingresar Un Valor Menor " +
+                            "O Igual A 8 Y Menor  O Igual a 15", R.mipmap.ic_launcher, getActivity(), false, false, true, 0);
                 }
             }
         } catch (Exception e) {
-            Alert_Dialog("ERROR!", "Revise Los Datos Ingresados", R.mipmap.ic_launcher, getActivity(), false);
+            Alert_Dialog("ERROR!", "Revise Los Datos Ingresados", R.mipmap.ic_launcher, getActivity(), false, false, true, 0);
         }
     }
 
-    private void Alert_Dialog(String Titulo, String Mensaje, int Icono, final Context context, boolean Icono_Negative) {
+    private void Alert_Dialog(String Titulo, String Mensaje, int Icono, final Context context, boolean Icono_Negative, final boolean Archivo, final boolean Error, final int Tamaño) {
         AlertDialog.Builder b = new AlertDialog.Builder(context)
                 .setTitle(Titulo)
                 .setIcon(Icono)
@@ -183,8 +184,10 @@ public class Dialog_Wifi extends DialogFragment implements View.OnClickListener 
                 .setPositiveButton("Ok", new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialogInterface, int i) {
-                        dismiss();
-                        new Passwords(Tv_Opcion.getText().toString(), false).show(((AppCompatActivity) context).getFragmentManager(), "");
+                        if(!Error){
+                            dismiss();
+                            new Passwords(Tv_Opcion.getText().toString(), Archivo, Tamaño, Wifi).show(((AppCompatActivity) context).getFragmentManager(), "");
+                        }
                     }
                 });
         if (Icono_Negative) {

