@@ -58,8 +58,9 @@ public class WifiController {
             public void onClick(View view) {
                 wifiManager.reconnect();
                 Position = myList.getChildAdapterPosition(view);
-                if (Integer.parseInt(WifiInfo.get(Position).getsLevel()) >= -90) {
-                    new Dialog_Wifi(WifiInfo.get(Position).getsNombre()).show(Fr, "Dialog");
+                if (Integer.parseInt(WifiInfo.get(Position).getsLevel()) >= -75) {
+                    if(wifiManager.getConnectionInfo().getSSID().toString().equals(String.format("\"%s\"",WifiInfo.get(Position).getsNombre()))) Toast.makeText(Cont, "La Red Seleccionada Ya Esta Conectada", Toast.LENGTH_LONG).show();
+                    else new Dialog_Wifi(WifiInfo.get(Position).getsNombre()).show(Fr, "Dialog");
                 } else {
                     Toast.makeText(Cont, "La Intensidad De La Señal Es Muy Baja Refresque La Lista", Toast.LENGTH_LONG).show();
                 }
